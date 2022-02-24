@@ -1,0 +1,18 @@
+Failures we handle:
+
+# TCP errors
+Since proxy is a tcp-based server, we might meet some tcp errors like failed to connect origin server and failed to send/receive packets. We carefully detect return values when calling socket library functions. Once we detect there is a tcp error, sometimes we may throw an exception with massage then handle it (like receiving/sending) or we may return the function and exit current thread (like when failed to accept the connection from client).
+
+# Malformed request/response
+For request/response, we encapsulate them into Request and Response classes. When we parse raw data and transfer it to object, we inspect the format of them. Once we detect malformed request/response (like find a valid header and '/r/n/r/n', or to see if it can be parsed successfully), we send 400/502 response to client and throw corresponding exception. Finally, we handle the exception outside processing function.
+
+Exception guarantees:
+
+The first step of proxy is to initialize server by socket library making NO THROW guarantee. While our proxy is working, every thread call process() in a TRY clause. In this way, we could catch all the exception thrown by us (when receiving malformed request/response) or program (like no enough heap space to allocate). And we will print corresponding massage. In summary, we make NO THROW guarantee.
+
+
+Some other dangers:
+
+Transferring of Http requests/responses relies on TCP so there are some cases might cause bad effect on our proxy. For example, after successful connection, what if client/origin server don't send packets to proxy? We may rely on time out mechanism to exit disconnected thread to make sure our program does not devote resources for those lost clients.
+
+Since the proxy is multi-threaded, we must carefully handle memory management. For instance, each thread has independent stack so we have to put shared cache and request/response objects on heap. However C/C++ does not have garbage collection, so we need to think rigorously to decide when to free them to avoid unexpected effect or memory leak.

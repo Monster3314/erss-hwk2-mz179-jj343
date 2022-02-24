@@ -1,0 +1,101 @@
+1. GET method
+---
+test case: use postman to send www.google.com with GET method
+---
+result:
+1: "GET http://www.google.com/ HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 16:07:50 2022
+1: not in cache
+1: Requesting "GET http://www.google.com/ HTTP/1.1" from www.google.com
+1: Received "HTTP/1.1 200 OK" from www.google.com
+1: not cacheable because private/no-store/max-age=0 appears in cache control field
+1: Responding "HTTP/1.1 200 OK"
+
+2. POST method
+---
+test case: use firefox to enter http://httpbin.org/forms/post and then fill the form and submit
+---
+result:
+1: "GET http://httpbin.org/forms/post HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 16:16:59 2022
+1: not in cache
+1: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" from httpbin.org
+1: Received "HTTP/1.1 200 OK" from httpbin.org
+1: not cacheable because private/no-store/max-age=0 appears in cache control field
+1: Responding "HTTP/1.1 200 OK"
+2: "CONNECT mozilla.cloudflare-dns.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 16:17:01 2022
+2: Responding "HTTP/1.1 200 OK"
+3: "POST http://httpbin.org/post HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 16:17:31 2022
+3: Requesting "POST http://httpbin.org/post HTTP/1.1" from httpbin.org
+3: Received "HTTP/1.1 200 OK" from httpbin.org
+3: Responding "HTTP/1.1 200 OK"
+
+3. CONNECT method
+---
+test case: use firefox to enter https://www.google.com and wait to see tunnels built by all CONNECT closed
+---
+result:
+1: "CONNECT www.google.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:04 2022
+1: Responding "HTTP/1.1 200 OK"
+2: "CONNECT www.google.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:08 2022
+2: Responding "HTTP/1.1 200 OK"
+3: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:09 2022
+3: Responding "HTTP/1.1 200 OK"
+5: "CONNECT adservice.google.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:09 2022
+5: Responding "HTTP/1.1 200 OK"
+6: "CONNECT googleads.g.doubleclick.net:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:09 2022
+6: Responding "HTTP/1.1 200 OK"
+4: Responding "HTTP/1.1 400 Bad Request"
+7: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:58 2022
+7: not in cache
+7: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from detectportal.firefox.com
+7: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+7: not cacheable because private/no-store/max-age=0 appears in cache control field
+7: Responding "HTTP/1.1 200 OK"
+8: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:40:58 2022
+8: not in cache
+8: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from detectportal.firefox.com
+8: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+8: not cacheable because private/no-store/max-age=0 appears in cache control field
+8: Responding "HTTP/1.1 200 OK"
+1: Tunnel closed
+5: Tunnel closed
+3: Tunnel closed
+6: Tunnel closed
+2: Tunnel closed
+9: "CONNECT www.google.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:44:56 2022
+9: Responding "HTTP/1.1 200 OK"
+10: "CONNECT mozilla.cloudflare-dns.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:46:38 2022
+10: Responding "HTTP/1.1 200 OK"
+11: "CONNECT contile.services.mozilla.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:46:38 2022
+11: Responding "HTTP/1.1 200 OK"
+12: "CONNECT contile-images.services.mozilla.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:46:38 2022
+12: Responding "HTTP/1.1 200 OK"
+9: Tunnel closed
+11: Tunnel closed
+12: Tunnel closed
+13: "CONNECT www.google.com:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:50:45 2022
+13: Responding "HTTP/1.1 200 OK"
+
+4. chunk test
+---test case: use firefox to enter http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx to see the completed result picture
+---result:
+1: "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:53:35 2022
+1: not in cache
+1: Requesting "GET http://www.httpwatch.com/httpgallery/chunked/chunkedimage.aspx HTTP/1.1" from www.httpwatch.com
+1: Received "HTTP/1.1 200 OK" from www.httpwatch.com
+1: not cacheable because it is chunked
+2: "CONNECT incoming.telemetry.mozilla.org:443 HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 18:53:35 2022
+2: Responding "HTTP/1.1 200 OK"
+
+5. in cache valid
+---test case: use postman to enter http://www.rabihyounes.com/650s22.html with GET method twice
+---result:
+1: "GET http://www.rabihyounes.com/650s22.html HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 20:29:04 2022
+1: not in cache
+1: Requesting "GET http://www.rabihyounes.com/650s22.html HTTP/1.1" from www.rabihyounes.com
+1: Received "HTTP/1.1 200 OK" from www.rabihyounes.com
+1: cached, expires at Thu Feb 24 02:29:04 2022
+1: Responding "HTTP/1.1 200 OK"
+2: "GET http://www.rabihyounes.com/650s22.html HTTP/1.1" from 10.197.200.28 @ Wed Feb 23 20:29:08 2022
+2: in cache, valid
+2: Responding "HTTP/1.1 200 OK"
+ 
